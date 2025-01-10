@@ -9,7 +9,7 @@ NAME_BONUS		= philo_bonus
 ########################### Mandatory ###########################
 
 MANDATORY_DIR	= philo
-MANDATORY_FILE	= philo.c
+MANDATORY_FILE	= philo.c verif_param.c
 
 MANDATORY = $(addprefix $(MANDATORY_DIR)/, $(MANDATORY_FILE))
 MANDATORY_OBJS	= $(MANDATORY:%.c=%.o)
@@ -40,10 +40,10 @@ $(BONUS_DIR)%.o: $(BONUS_DIR)%.c
 	$(CC) $(CFLAGS) -c -o $@ $< $(INCLUDE_BONUS)
 
 $(NAME_MANDATORY): $(MANDATORY_OBJS)
-	$(CC) $(CFLAGS) -o $@ $(MANDATORY_OBJS)
+	$(CC) $(CFLAGS) -o $@ $(MANDATORY_OBJS) -lpthread
 
 $(NAME_BONUS): $(BONUS_OBJS)
-	$(CC) $(CFLAGS) -o $@ $(BONUS_OBJS)
+	$(CC) $(CFLAGS) -o $@ $(BONUS_OBJS) -lpthread
 
 clean:
 	@$(RM) $(MANDATORY_OBJS) $(BONUS_OBJS)
