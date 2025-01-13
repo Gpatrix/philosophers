@@ -6,7 +6,7 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:14:31 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/13 15:48:29 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/13 15:52:13 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	*philo_routine(void *arg)
 	while (philo_size(self) != self->info->nb_philo)
 		usleep(1);
 	while (1)
-	{	
+	{
 		if (self->thread_type)
 		{
 			pthread_mutex_lock(&self->fork);
