@@ -6,7 +6,7 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:14:31 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/13 15:52:13 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/13 17:06:56 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ bool	get_param(int argc, char **argv, t_philo_info *philo_info)
 		return (printf("%s\n", ERROR_INIT_MUTEX), EXIT_FAILURE);
 	philo_info->time_mutex = &time_mutex;
 	philo_info->write_mutex = &write_mutex;
+	philo_info->start = false;
+	philo_info->start_time = 0;
 	return (EXIT_SUCCESS);
 }
 
@@ -41,14 +43,16 @@ long	get_time(pthread_mutex_t *time_mutex)
 	pthread_mutex_lock(time_mutex);
 	gettimeofday(&timeval, NULL);
 	pthread_mutex_unlock(time_mutex);
-	return (timeval.tv_usec);
+	return ((timeval.tv_sec * 1000) + (timeval.tv_usec / 1000));
 }
 
 void	print_msg(t_philo_info *philo_info, short type, int self)
 {
 	pthread_mutex_lock(philo_info->write_mutex);
 
-	printf("%li %i ", get_time(philo_info->time_mutex), self);
+	printf("%li %i ",
+		get_time(philo_info->time_mutex) - philo_info->start_time,
+		self);
 	if (type == FORK)
 		printf(GREY MSG_FORK END);
 	else if (type == EATING)
@@ -57,8 +61,6 @@ void	print_msg(t_philo_info *philo_info, short type, int self)
 		printf(BLUE MSG_SLEEPING END);
 	else if (type == THINKING)
 		printf(WHITE MSG_THINKING END);
-	else if (type == DIED)
-		printf(RED MSG_DIED END);
 	pthread_mutex_unlock(philo_info->write_mutex);
 }
 

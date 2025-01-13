@@ -6,7 +6,7 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:14:54 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/13 15:46:41 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/13 16:59:04 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ typedef struct s_philo_info
 	long			t_to_eat;
 	long			t_to_sleep;
 	long			nb_must_eat;
+	long			start_time;
+	bool		start;
 	pthread_mutex_t	*write_mutex;
 	pthread_mutex_t	*time_mutex;
 }		t_philo_info;
@@ -79,6 +81,7 @@ void	*philo_routine(void *arg);
 
 t_philo	*philo_new(t_philo_info *philo_info, int self_nb, bool thread_type);
 bool	philo_add_last(t_philo	**lst, t_philo	*philo);
+int		philo_size(t_philo *lst);
 void	philo_free(t_philo *lst);
 
-int		philo_size(t_philo *lst);
+long	get_time(pthread_mutex_t *time_mutex);
