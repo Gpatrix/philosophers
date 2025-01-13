@@ -1,6 +1,6 @@
 CC		= cc
-CFLAGS	= -Wall -Wextra -Werror -g3 -O3
-
+CFLAGS	= -Wall -Wextra -Werror -g3 -O1
+#  -fsanitize=thread
 RM		= rm -f
 
 NAME_MANDATORY	= philo
@@ -9,7 +9,7 @@ NAME_BONUS		= philo_bonus
 ########################### Mandatory ###########################
 
 MANDATORY_DIR	= philo
-MANDATORY_FILE	= philo.c verif_param.c
+MANDATORY_FILE	= philo.c verif_param.c philo_utils.c init_philo.c
 
 MANDATORY = $(addprefix $(MANDATORY_DIR)/, $(MANDATORY_FILE))
 MANDATORY_OBJS	= $(MANDATORY:%.c=%.o)

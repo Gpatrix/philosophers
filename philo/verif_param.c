@@ -6,7 +6,7 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:48:57 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/10 18:01:24 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/13 10:22:12 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ bool	verif_param(int argc, char **argv)
 	while (argc > 1)
 	{
 		arg = argv[argc - 1];
-		if (ft_atol(arg) < 1)
+		if (ft_atol(arg) < 1 || ft_atol(arg) > __INT_MAX__)
 			return (EXIT_FAILURE);
 		if ((*arg == '-' || *arg == '+') && *arg != '\0')
 			arg++;
