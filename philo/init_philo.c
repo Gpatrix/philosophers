@@ -6,7 +6,7 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 10:49:43 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/13 17:04:06 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/13 17:38:52 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,18 @@ static bool	_init_struct(t_philo **philo, t_philo_info *philo_info)
 	return (EXIT_SUCCESS);
 }
 
-static bool	_init_pthread(t_philo *philo, int nb_philo)
+static bool	_init_pthread(t_philo *philo, int nb_philo, pthread_t *big_brother)
 {
 	int		counter;
 
 	counter = 0;
 	philo->info->start_time = get_time(philo->info->time_mutex);
+	if (pthread_create(big_brother, NULL, big_brother_routine, philo))
+		return (printf("%s\n", ERROR_CREATE_BIG_BROTHER), EXIT_FAILURE);
 	while (counter != nb_philo)
 	{
 		if (pthread_create(&philo->philo, NULL, philo_routine, philo))
-			return (printf("%s\n", ERROR_CREATE_PHILO), NULL);
+			return (printf("%s\n", ERROR_CREATE_PHILO), EXIT_FAILURE);
 		philo = philo->next;
 		counter++;
 	}
@@ -65,12 +67,13 @@ bool	_init_join(t_philo *philo, int nb_philo)
 
 bool	get_philo(t_philo **philo, t_philo_info *philo_info)
 {
+	pthread_t	big_brother;
 
 	if (_init_struct(philo, philo_info))
 		return (EXIT_FAILURE);
-	if (_init_pthread(*philo, philo_info->nb_philo))
+	if (_init_pthread(*philo, philo_info->nb_philo, &big_brother))
 		return (EXIT_FAILURE);
-	if (_init_join(*philo, philo_info->nb_philo))
-		return (EXIT_FAILURE);
+	if (pthread_join(big_brother, NULL))
+		return (printf("%s\n", ERROR_INIT_JOIN), EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
