@@ -6,14 +6,13 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 09:16:28 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/13 12:10:20 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/13 15:46:32 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-t_philo	*philo_new(t_philo_info *philo_info, int self_nb
-												, pthread_mutex_t *write_mutex)
+t_philo	*philo_new(t_philo_info *philo_info, int self_nb, bool thread_type)
 {
 	t_philo	*new_philo;
 
@@ -22,9 +21,9 @@ t_philo	*philo_new(t_philo_info *philo_info, int self_nb
 		return (printf("%s\n", ERROR_CREATE_PHILO_STRUCT), NULL);
 	if (pthread_mutex_init(&new_philo->fork, NULL))
 		return (printf("%s\n", ERROR_INIT_MUTEX), NULL);
-	new_philo->philo_info = philo_info;
+	new_philo->info = philo_info;
 	new_philo->self_nb = self_nb;
-	new_philo->write_mutex = write_mutex;
+	new_philo->thread_type = thread_type;
 	new_philo->next = NULL;
 	return (new_philo);
 }
@@ -67,3 +66,20 @@ void	philo_free(t_philo *lst)
 	}
 }
 
+int	philo_size(t_philo *lst)
+{
+	t_philo	*origin;
+	int		size;
+
+	if (!lst)
+		return (0);
+	origin = lst;
+	lst = lst->next;
+	size = 1;
+	while (origin != lst)
+	{
+		lst = lst->next;
+		size++;
+	}
+	return (size);
+}

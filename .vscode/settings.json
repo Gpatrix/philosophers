@@ -7,6 +7,9 @@
 		"stdbool.h": "c",
 		"random": "c",
 		"time.h": "c",
-		"__locale": "c"
+		"__locale": "c",
+		"condition_variable": "c",
+		"atomic": "c",
+		"__mutex_base": "c"
 	}
 }

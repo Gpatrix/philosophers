@@ -1,5 +1,5 @@
 CC		= cc
-CFLAGS	= -Wall -Wextra -Werror -g3 -O1
+CFLAGS	= -Wall -Wextra -Werror -g3 -O1 -fsanitize=thread
 #  -fsanitize=thread
 RM		= rm -f
 
