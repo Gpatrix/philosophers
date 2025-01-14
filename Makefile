@@ -21,7 +21,7 @@ INCLUDE_MANDATORY = -I $(addprefix $(MANDATORY_DIR)/, philo.h)
 
 ########################### Bonus ###########################
 BONUS_DIR	= philo_bonus
-BONUS_FILE	=
+BONUS_FILE	= philo.c verif_param.c
 
 BONUS = $(addprefix $(BONUS_DIR)/, $(BONUS_FILE))
 BONUS_OBJS	= $(BONUS:$(BONUS_DIR)%.c=$(BONUS_DIR)%.o)

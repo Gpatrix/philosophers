@@ -6,7 +6,7 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:14:31 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/14 14:59:30 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/14 15:00:13 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,51 +22,52 @@ bool	get_param(int argc, char **argv, t_philo_info *philo_info)
 		philo_info->nb_must_eat = ft_atol(argv[5]);
 	else
 		philo_info->nb_must_eat = -1;
-	if (pthread_mutex_init(&philo_info->time_sem, NULL))
+	if (sem_init(&philo_info->time_sem, PTHREAD_PROCESS_PRIVATE,
+			philo_info->nb_philo))
 		return (printf("%s\n", ERROR_INIT_SEM), EXIT_FAILURE);
-	if (pthread_mutex_init(&philo_info->write_sem, NULL))
+	if (sem_init(&philo_info->write_sem, PTHREAD_PROCESS_PRIVATE, 1))
 		return (printf("%s\n", ERROR_INIT_SEM), EXIT_FAILURE);
-	if (pthread_mutex_init(&philo_info->end_sem, NULL))
+	if (sem_init(&philo_info->end_sem, PTHREAD_PROCESS_PRIVATE, 1))
 		return (printf("%s\n", ERROR_INIT_SEM), EXIT_FAILURE);
 	philo_info->is_ended = false;
 	philo_info->start_time = 0;
 	return (EXIT_SUCCESS);
 }
 
-bool	print_msg(t_philo_info *philo_info, short type, int self)
-{
-	long	time;
+// bool	print_msg(t_philo_info *philo_info, short type, int self)
+// {
+// 	long	time;
 
-	pthread_mutex_lock(&philo_info->write_sem);
-	if (check_end(philo_info))
-		return (pthread_mutex_unlock(&philo_info->write_sem), EXIT_FAILURE);
-	time = get_time(philo_info);
-	if (time == -1)
-		return (pthread_mutex_unlock(&philo_info->write_sem), EXIT_FAILURE);
-	printf("%li %i ", time - philo_info->start_time, self);
-	if (type == FORK)
-		printf(GREY MSG_FORK END);
-	else if (type == EATING)
-		printf(GREEN MSG_EATING END);
-	else if (type == SLEEPING)
-		printf(BLUE MSG_SLEEPING END);
-	else if (type == THINKING)
-		printf(WHITE MSG_THINKING END);
-	pthread_mutex_unlock(&philo_info->write_sem);
-	return (EXIT_SUCCESS);
-}
+// 	pthread_mutex_lock(&philo_info->write_sem);
+// 	if (check_end(philo_info))
+// 		return (pthread_mutex_unlock(&philo_info->write_sem), EXIT_FAILURE);
+// 	time = get_time(philo_info);
+// 	if (time == -1)
+// 		return (pthread_mutex_unlock(&philo_info->write_sem), EXIT_FAILURE);
+// 	printf("%li %i ", time - philo_info->start_time, self);
+// 	if (type == FORK)
+// 		printf(GREY MSG_FORK END);
+// 	else if (type == EATING)
+// 		printf(GREEN MSG_EATING END);
+// 	else if (type == SLEEPING)
+// 		printf(BLUE MSG_SLEEPING END);
+// 	else if (type == THINKING)
+// 		printf(WHITE MSG_THINKING END);
+// 	pthread_mutex_unlock(&philo_info->write_sem);
+// 	return (EXIT_SUCCESS);
+// }
 
-long	get_time(t_philo_info *info)
-{
-	struct timeval	timeval;
+// long	get_time(t_philo_info *info)
+// {
+// 	struct timeval	timeval;
 
-	pthread_mutex_lock(&info->time_sem);
-	if (check_end(info))
-		return (pthread_mutex_unlock(&info->time_sem), -1);
-	gettimeofday(&timeval, NULL);
-	pthread_mutex_unlock(&info->time_sem);
-	return ((timeval.tv_sec * 1000) + (timeval.tv_usec / 1000));
-}
+// 	pthread_mutex_lock(&info->time_sem);
+// 	if (check_end(info))
+// 		return (pthread_mutex_unlock(&info->time_sem), -1);
+// 	gettimeofday(&timeval, NULL);
+// 	pthread_mutex_unlock(&info->time_sem);
+// 	return ((timeval.tv_sec * 1000) + (timeval.tv_usec / 1000));
+// }
 
 void	single_philo(t_philo_info *philo_info)
 {
@@ -85,13 +86,13 @@ int	main(int argc, char **argv)
 		return (printf("%s\n", ERROR_PARAM), EXIT_FAILURE);
 	if (get_param(argc, argv, &philo_info))
 		return (EXIT_FAILURE);
-	if (philo_info.nb_philo == 1)
-		single_philo(&philo_info);
-	else
-	{
-		if (get_philo(&philo, &philo_info))
-			return (EXIT_FAILURE);
-		philo_free(philo);
-	}
+	// if (philo_info.nb_philo == 1)
+	// 	single_philo(&philo_info);
+	// else
+	// {
+	// 	if (get_philo(&philo, &philo_info))
+	// 		return (EXIT_FAILURE);
+	// 	philo_free(philo);
+	// }
 	return (EXIT_SUCCESS);
 }

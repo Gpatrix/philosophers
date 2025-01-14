@@ -6,7 +6,7 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:14:54 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/14 14:55:26 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/14 14:59:40 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
+#include <semaphore.h>
 #include <stdbool.h>
 #include <unistd.h>
 #include <sys/time.h>
@@ -26,7 +27,7 @@
 #define ERROR_CREATE_PHILO_STRUCT "error creating philo struct"
 #define ERROR_CREATE_PHILO "error creating philo"
 #define ERROR_CREATE_BIG_BROTHER "error creating big brother"
-#define ERROR_INIT_MUTEX "error init mutex"
+#define ERROR_INIT_SEM "error init semaphore"
 #define ERROR_INIT_JOIN "error pthread_join"
 
 #define END   "\033[0m"
@@ -50,29 +51,29 @@
 
 typedef struct s_philo_info
 {
-	int				nb_philo;
-	long			t_to_die;
-	long			t_to_eat;
-	long			t_to_sleep;
-	long			nb_must_eat;
-	long			start_time;
-	bool			is_ended;
-	pthread_mutex_t	write_sem;
-	pthread_mutex_t	time_sem;
-	pthread_mutex_t	end_sem;
+	int		nb_philo;
+	long	t_to_die;
+	long	t_to_eat;
+	long	t_to_sleep;
+	long	nb_must_eat;
+	long	start_time;
+	bool	is_ended;
+	sem_t	write_sem;
+	sem_t	time_sem;
+	sem_t	end_sem;
 }		t_philo_info;
 
 typedef struct s_philo
 {
-	pthread_t			philo;
-	int					self_nb;
-	long				last_meal;
-	long				nb_meal;
-	int					start_wait;
-	pthread_mutex_t		fork;
-	pthread_mutex_t		meal_mutex;
-	t_philo_info		*info;
-	struct s_philo		*next;
+	pthread_t		philo;
+	int				self_nb;
+	long			last_meal;
+	long			nb_meal;
+	int				start_wait;
+	sem_t			fork;
+	sem_t			meal_mutex;
+	t_philo_info	*info;
+	struct s_philo	*next;
 }		t_philo;
 
 bool	verif_param(int argc, char **argv);
