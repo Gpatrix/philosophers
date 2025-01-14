@@ -10,6 +10,7 @@
 		"__locale": "c",
 		"condition_variable": "c",
 		"atomic": "c",
-		"__mutex_base": "c"
+		"__mutex_base": "c",
+		"locale": "c"
 	}
 }
