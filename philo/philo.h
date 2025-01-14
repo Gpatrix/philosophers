@@ -6,7 +6,7 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:14:54 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/14 14:55:26 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/14 17:49:43 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,9 @@ typedef struct s_philo_info
 	long			nb_must_eat;
 	long			start_time;
 	bool			is_ended;
-	pthread_mutex_t	write_sem;
-	pthread_mutex_t	time_sem;
-	pthread_mutex_t	end_sem;
+	pthread_mutex_t	write_mutex;
+	pthread_mutex_t	time_mutex;
+	pthread_mutex_t	end_mutex;
 }		t_philo_info;
 
 typedef struct s_philo

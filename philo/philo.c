@@ -6,7 +6,7 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:14:31 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/14 14:59:30 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/14 17:49:43 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ bool	get_param(int argc, char **argv, t_philo_info *philo_info)
 		philo_info->nb_must_eat = ft_atol(argv[5]);
 	else
 		philo_info->nb_must_eat = -1;
-	if (pthread_mutex_init(&philo_info->time_sem, NULL))
-		return (printf("%s\n", ERROR_INIT_SEM), EXIT_FAILURE);
-	if (pthread_mutex_init(&philo_info->write_sem, NULL))
-		return (printf("%s\n", ERROR_INIT_SEM), EXIT_FAILURE);
-	if (pthread_mutex_init(&philo_info->end_sem, NULL))
-		return (printf("%s\n", ERROR_INIT_SEM), EXIT_FAILURE);
+	if (pthread_mutex_init(&philo_info->time_mutex, NULL))
+		return (printf("%s\n", ERROR_INIT_MUTEX), EXIT_FAILURE);
+	if (pthread_mutex_init(&philo_info->write_mutex, NULL))
+		return (printf("%s\n", ERROR_INIT_MUTEX), EXIT_FAILURE);
+	if (pthread_mutex_init(&philo_info->end_mutex, NULL))
+		return (printf("%s\n", ERROR_INIT_MUTEX), EXIT_FAILURE);
 	philo_info->is_ended = false;
 	philo_info->start_time = 0;
 	return (EXIT_SUCCESS);
@@ -37,12 +37,12 @@ bool	print_msg(t_philo_info *philo_info, short type, int self)
 {
 	long	time;
 
-	pthread_mutex_lock(&philo_info->write_sem);
+	pthread_mutex_lock(&philo_info->write_mutex);
 	if (check_end(philo_info))
-		return (pthread_mutex_unlock(&philo_info->write_sem), EXIT_FAILURE);
+		return (pthread_mutex_unlock(&philo_info->write_mutex), EXIT_FAILURE);
 	time = get_time(philo_info);
 	if (time == -1)
-		return (pthread_mutex_unlock(&philo_info->write_sem), EXIT_FAILURE);
+		return (pthread_mutex_unlock(&philo_info->write_mutex), EXIT_FAILURE);
 	printf("%li %i ", time - philo_info->start_time, self);
 	if (type == FORK)
 		printf(GREY MSG_FORK END);
@@ -52,7 +52,7 @@ bool	print_msg(t_philo_info *philo_info, short type, int self)
 		printf(BLUE MSG_SLEEPING END);
 	else if (type == THINKING)
 		printf(WHITE MSG_THINKING END);
-	pthread_mutex_unlock(&philo_info->write_sem);
+	pthread_mutex_unlock(&philo_info->write_mutex);
 	return (EXIT_SUCCESS);
 }
 
@@ -60,11 +60,11 @@ long	get_time(t_philo_info *info)
 {
 	struct timeval	timeval;
 
-	pthread_mutex_lock(&info->time_sem);
+	pthread_mutex_lock(&info->time_mutex);
 	if (check_end(info))
-		return (pthread_mutex_unlock(&info->time_sem), -1);
+		return (pthread_mutex_unlock(&info->time_mutex), -1);
 	gettimeofday(&timeval, NULL);
-	pthread_mutex_unlock(&info->time_sem);
+	pthread_mutex_unlock(&info->time_mutex);
 	return ((timeval.tv_sec * 1000) + (timeval.tv_usec / 1000));
 }
 

@@ -6,7 +6,7 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:20:53 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/14 14:55:26 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/14 17:49:43 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@ static inline bool	_verif_dead(t_philo *other)
 	pthread_mutex_lock(&other->meal_mutex);
 	if (time - other->last_meal > other->info->t_to_die)
 	{
-		pthread_mutex_lock(&other->info->end_sem);
+		pthread_mutex_lock(&other->info->end_mutex);
 		other->info->is_ended = true;
-		pthread_mutex_unlock(&other->info->end_sem);
-		pthread_mutex_lock(&other->info->write_sem);
+		pthread_mutex_unlock(&other->info->end_mutex);
+		pthread_mutex_lock(&other->info->write_mutex);
 		printf("%li %i ", time - other->info->start_time, other->self_nb);
 		printf(RED MSG_DIED END);
-		pthread_mutex_unlock(&other->info->write_sem);
+		pthread_mutex_unlock(&other->info->write_mutex);
 		pthread_mutex_unlock(&other->meal_mutex);
 		return (EXIT_FAILURE);
 	}
@@ -48,9 +48,9 @@ bool	verif_meal(t_philo *other)
 		other = other->next;
 		philo_counter++;
 	}
-	pthread_mutex_lock(&other->info->end_sem);
+	pthread_mutex_lock(&other->info->end_mutex);
 	other->info->is_ended = true;
-	pthread_mutex_unlock(&other->info->end_sem);
+	pthread_mutex_unlock(&other->info->end_mutex);
 	return (true);
 }
 

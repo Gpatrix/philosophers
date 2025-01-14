@@ -6,7 +6,7 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:18:52 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/14 14:55:26 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/14 17:49:43 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 bool	check_end(t_philo_info *info)
 {
-	pthread_mutex_lock(&info->end_sem);
+	pthread_mutex_lock(&info->end_mutex);
 	if (info->is_ended == true)
-		return (pthread_mutex_unlock(&info->end_sem), true);
+		return (pthread_mutex_unlock(&info->end_mutex), true);
 	else
-		return (pthread_mutex_unlock(&info->end_sem), false);
+		return (pthread_mutex_unlock(&info->end_mutex), false);
 }
 
 bool	update_meal(t_philo *self)
