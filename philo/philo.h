@@ -6,7 +6,7 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:14:54 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/14 11:43:46 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/14 12:48:03 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,10 @@ typedef struct s_philo_info
 	long			t_to_sleep;
 	long			nb_must_eat;
 	long			start_time;
-	bool			is_dead;
+	bool			is_ended;
 	pthread_mutex_t	write_mutex;
 	pthread_mutex_t	time_mutex;
-	pthread_mutex_t	dead_mutex;
+	pthread_mutex_t	end_mutex;
 }		t_philo_info;
 
 typedef struct s_philo
@@ -68,9 +68,10 @@ typedef struct s_philo
 	pthread_t			philo;
 	int					self_nb;
 	long				last_meal;
+	long				nb_meal;
 	int					start_wait;
 	pthread_mutex_t		fork;
-	pthread_mutex_t		last_meal_mutex;
+	pthread_mutex_t		meal_mutex;
 	t_philo_info		*info;
 	struct s_philo		*next;
 }		t_philo;
@@ -89,6 +90,8 @@ int		philo_size(t_philo *lst);
 void	philo_free(t_philo *lst);
 
 bool	print_msg(t_philo_info *philo_info, short type, int self);
-bool	is_philo_dead(t_philo_info *info);
+bool	check_end(t_philo_info *info);
 
 long	get_time(t_philo_info *info);
+
+bool	verif_meal(t_philo *other);

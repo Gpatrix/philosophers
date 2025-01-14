@@ -6,7 +6,7 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:14:31 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/14 10:48:43 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/14 12:58:11 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ bool	get_param(int argc, char **argv, t_philo_info *philo_info)
 		return (printf("%s\n", ERROR_INIT_MUTEX), EXIT_FAILURE);
 	if (pthread_mutex_init(&philo_info->write_mutex, NULL))
 		return (printf("%s\n", ERROR_INIT_MUTEX), EXIT_FAILURE);
-	if (pthread_mutex_init(&philo_info->dead_mutex, NULL))
+	if (pthread_mutex_init(&philo_info->end_mutex, NULL))
 		return (printf("%s\n", ERROR_INIT_MUTEX), EXIT_FAILURE);
-	philo_info->is_dead = false;
+	philo_info->is_ended = false;
 	philo_info->start_time = 0;
 	return (EXIT_SUCCESS);
 }
@@ -38,14 +38,12 @@ bool	print_msg(t_philo_info *philo_info, short type, int self)
 	long	time;
 
 	pthread_mutex_lock(&philo_info->write_mutex);
-	if (is_philo_dead(philo_info))
+	if (check_end(philo_info))
 		return (pthread_mutex_unlock(&philo_info->write_mutex), EXIT_FAILURE);
 	time = get_time(philo_info);
 	if (time == -1)
 		return (pthread_mutex_unlock(&philo_info->write_mutex), EXIT_FAILURE);
-	printf("%li %i ",
-		time - philo_info->start_time,
-		self);
+	printf("%li %i ", time - philo_info->start_time, self);
 	if (type == FORK)
 		printf(GREY MSG_FORK END);
 	else if (type == EATING)
@@ -63,7 +61,7 @@ long	get_time(t_philo_info *info)
 	struct timeval	timeval;
 
 	pthread_mutex_lock(&info->time_mutex);
-	if (is_philo_dead(info))
+	if (check_end(info))
 		return (pthread_mutex_unlock(&info->time_mutex), -1);
 	gettimeofday(&timeval, NULL);
 	pthread_mutex_unlock(&info->time_mutex);
@@ -82,6 +80,6 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	if (get_philo(&philo, &philo_info))
 		return (EXIT_FAILURE);
-	// philo_free(philo);
+	philo_free(philo);
 	return (EXIT_SUCCESS);
 }

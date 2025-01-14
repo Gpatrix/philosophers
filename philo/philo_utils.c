@@ -6,7 +6,7 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 09:16:28 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/14 11:43:21 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/14 12:35:25 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,12 @@ t_philo	*philo_new(t_philo_info *philo_info, int self_nb, int start_wait)
 	if (!new_philo)
 		return (printf("%s\n", ERROR_CREATE_PHILO_STRUCT), NULL);
 	if (pthread_mutex_init(&new_philo->fork, NULL)
-		|| pthread_mutex_init(&new_philo->last_meal_mutex, NULL))
+		|| pthread_mutex_init(&new_philo->meal_mutex, NULL))
 		return (printf("%s\n", ERROR_INIT_MUTEX), NULL);
 	new_philo->info = philo_info;
 	new_philo->self_nb = self_nb;
 	new_philo->start_wait = start_wait;
+	new_philo->nb_meal = 0;
 	new_philo->next = NULL;
 	return (new_philo);
 }
@@ -57,13 +58,16 @@ void	philo_free(t_philo *lst)
 	if (!lst)
 		return ;
 	origin = NULL;
+	pthread_mutex_destroy(&lst->info->write_mutex);
+	pthread_mutex_destroy(&lst->info->time_mutex);
+	pthread_mutex_destroy(&lst->info->end_mutex);
 	while (origin != lst)
 	{
 		if (!origin)
 			origin = lst;
 		tmp_philo = lst;
 		lst = lst->next;
-		pthread_mutex_destroy(&tmp_philo->last_meal_mutex);
+		pthread_mutex_destroy(&tmp_philo->meal_mutex);
 		free(tmp_philo);
 	}
 }

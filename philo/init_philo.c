@@ -6,7 +6,7 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 10:49:43 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/14 11:43:35 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/14 12:09:45 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ static void	_wait_philo(t_philo *philo)
 	while (counter != philo->info->nb_philo)
 	{
 		pthread_join(philo->philo, NULL);
+		philo = philo->next;
 		counter++;
 	}
 }
