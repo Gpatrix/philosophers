@@ -6,7 +6,7 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:20:53 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/14 13:01:51 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/14 13:42:42 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ static inline bool	_verif_dead(t_philo *other)
 
 	time = get_time(other->info);
 	pthread_mutex_lock(&other->meal_mutex);
-
 	if (time - other->last_meal > other->info->t_to_die)
 	{
 		pthread_mutex_lock(&other->info->end_mutex);
@@ -44,7 +43,7 @@ bool	verif_meal(t_philo *other)
 	{
 		pthread_mutex_lock(&other->meal_mutex);
 		if (other->nb_meal < other->info->nb_must_eat)
-			return (false);
+			return (pthread_mutex_unlock(&other->meal_mutex), false);
 		pthread_mutex_unlock(&other->meal_mutex);
 		other = other->next;
 		philo_counter++;
@@ -57,7 +56,6 @@ bool	verif_meal(t_philo *other)
 
 void	*big_brother(t_philo *other)
 {
-
 	while (1)
 	{
 		if (_verif_dead(other))

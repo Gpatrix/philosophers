@@ -6,7 +6,7 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:14:31 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/14 12:58:11 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/14 13:53:54 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,13 @@ long	get_time(t_philo_info *info)
 	return ((timeval.tv_sec * 1000) + (timeval.tv_usec / 1000));
 }
 
+void	single_philo(t_philo_info *philo_info)
+{
+	printf("0 1 "GREY"has taken a fork\n"END);
+	usleep(philo_info->t_to_die * 1000);
+	printf("%li 1 "RED"died\n"END, philo_info->t_to_die);
+}
+
 int	main(int argc, char **argv)
 {
 	t_philo_info	philo_info;
@@ -78,8 +85,13 @@ int	main(int argc, char **argv)
 		return (printf("%s\n", ERROR_PARAM), EXIT_FAILURE);
 	if (get_param(argc, argv, &philo_info))
 		return (EXIT_FAILURE);
-	if (get_philo(&philo, &philo_info))
-		return (EXIT_FAILURE);
-	philo_free(philo);
+	if (philo_info.nb_philo == 1)
+		single_philo(&philo_info);
+	else
+	{
+		if (get_philo(&philo, &philo_info))
+			return (EXIT_FAILURE);
+		philo_free(philo);
+	}
 	return (EXIT_SUCCESS);
 }

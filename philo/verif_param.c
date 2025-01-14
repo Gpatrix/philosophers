@@ -6,7 +6,7 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:48:57 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/13 10:22:12 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/14 13:42:30 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,6 @@ long	ft_atol(const char *nptr)
 	}
 	return (resulte * signe);
 }
-
-
 
 bool	verif_param(int argc, char **argv)
 {

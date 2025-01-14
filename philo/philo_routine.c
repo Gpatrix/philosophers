@@ -6,7 +6,7 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:18:52 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/14 12:50:57 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/14 13:40:52 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,6 @@ bool	philo_eat(t_philo *self)
 	usleep(self->info->t_to_eat * 1000);
 	pthread_mutex_unlock(&self->fork);
 	pthread_mutex_unlock(&self->next->fork);
-	pthread_mutex_lock(&self->meal_mutex);
-	self->last_meal = get_time(self->info);
-	self->nb_meal++;
-	pthread_mutex_unlock(&self->meal_mutex);
 	if (update_meal(self))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);

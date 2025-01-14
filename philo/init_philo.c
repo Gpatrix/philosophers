@@ -6,7 +6,7 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 10:49:43 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/14 12:09:45 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/14 13:46:54 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,7 @@ bool	get_philo(t_philo **philo, t_philo_info *philo_info)
 		return (EXIT_FAILURE);
 	if (_init_pthread(*philo, philo_info->nb_philo))
 		return (EXIT_FAILURE);
-	if (big_brother(*philo))
-		return (printf("%s\n", ERROR_INIT_JOIN), EXIT_FAILURE);
+	big_brother(*philo);
 	_wait_philo(*philo);
 	return (EXIT_SUCCESS);
 }
