@@ -6,7 +6,7 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 09:16:28 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/13 16:47:49 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/14 09:26:42 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ t_philo	*philo_new(t_philo_info *philo_info, int self_nb, bool thread_type)
 	new_philo = malloc(sizeof(t_philo));
 	if (!new_philo)
 		return (printf("%s\n", ERROR_CREATE_PHILO_STRUCT), NULL);
-	if (pthread_mutex_init(&new_philo->fork, NULL))
+	if (pthread_mutex_init(&new_philo->fork, NULL)
+		|| pthread_mutex_init(&new_philo->last_meat_mutex, NULL))
 		return (printf("%s\n", ERROR_INIT_MUTEX), NULL);
 	new_philo->info = philo_info;
 	new_philo->self_nb = self_nb;

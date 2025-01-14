@@ -9,8 +9,8 @@ NAME_BONUS		= philo_bonus
 ########################### Mandatory ###########################
 
 MANDATORY_DIR	= philo
-MANDATORY_FILE	= philo.c verif_param.c philo_utils.c               \
-				  init_philo.c philo_routine.c big_brother_routine.c
+MANDATORY_FILE	= philo.c verif_param.c philo_utils.c       \
+				  init_philo.c philo_routine.c big_brother.c
 
 MANDATORY = $(addprefix $(MANDATORY_DIR)/, $(MANDATORY_FILE))
 MANDATORY_OBJS	= $(MANDATORY:%.c=%.o)

@@ -6,7 +6,7 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:14:31 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/13 17:40:27 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/14 10:02:21 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 
 bool	get_param(int argc, char **argv, t_philo_info *philo_info)
 {
-	static pthread_mutex_t	time_mutex;
-	static pthread_mutex_t	write_mutex;
-
 	philo_info->nb_philo = ft_atol(argv[1]);
 	philo_info->t_to_die = ft_atol(argv[2]);
 	philo_info->t_to_eat = ft_atol(argv[3]);
@@ -25,13 +22,34 @@ bool	get_param(int argc, char **argv, t_philo_info *philo_info)
 		philo_info->nb_must_eat = ft_atol(argv[5]);
 	else
 		philo_info->nb_must_eat = -1;
-	if (pthread_mutex_init(&time_mutex, NULL))
+	if (pthread_mutex_init(&philo_info->time_mutex, NULL))
 		return (printf("%s\n", ERROR_INIT_MUTEX), EXIT_FAILURE);
-	if (pthread_mutex_init(&write_mutex, NULL))
+	if (pthread_mutex_init(&philo_info->write_mutex, NULL))
 		return (printf("%s\n", ERROR_INIT_MUTEX), EXIT_FAILURE);
-	philo_info->time_mutex = &time_mutex;
-	philo_info->write_mutex = &write_mutex;
+	if (pthread_mutex_init(&philo_info->dead_mutex, NULL))
+		return (printf("%s\n", ERROR_INIT_MUTEX), EXIT_FAILURE);
+	philo_info->is_dead = false;
 	philo_info->start_time = 0;
+	return (EXIT_SUCCESS);
+}
+
+bool	print_msg(t_philo_info *philo_info, short type, int self)
+{
+	pthread_mutex_lock(&philo_info->write_mutex);
+	if (is_philo_dead(philo_info))
+		return (EXIT_FAILURE);
+	printf("%li %i ",
+		get_time(&philo_info->time_mutex) - philo_info->start_time,
+		self);
+	if (type == FORK)
+		printf(GREY MSG_FORK END);
+	else if (type == EATING)
+		printf(GREEN MSG_EATING END);
+	else if (type == SLEEPING)
+		printf(BLUE MSG_SLEEPING END);
+	else if (type == THINKING)
+		printf(WHITE MSG_THINKING END);
+	pthread_mutex_unlock(&philo_info->write_mutex);
 	return (EXIT_SUCCESS);
 }
 
@@ -57,6 +75,6 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	if (get_philo(&philo, &philo_info))
 		return (EXIT_FAILURE);
-	// philo_free(philo);
+	philo_free(philo);
 	return (EXIT_SUCCESS);
 }

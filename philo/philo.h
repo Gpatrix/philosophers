@@ -6,7 +6,7 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:14:54 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/13 17:37:38 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/14 09:58:34 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,17 +57,20 @@ typedef struct s_philo_info
 	long			t_to_sleep;
 	long			nb_must_eat;
 	long			start_time;
-	pthread_mutex_t	*write_mutex;
-	pthread_mutex_t	*time_mutex;
+	bool			is_dead;
+	pthread_mutex_t	write_mutex;
+	pthread_mutex_t	time_mutex;
+	pthread_mutex_t	dead_mutex;
 }		t_philo_info;
 
 typedef struct s_philo
 {
 	pthread_t			philo;
 	int					self_nb;
-	long				last_eat;
+	long				last_meat;
 	bool				thread_type;
 	pthread_mutex_t		fork;
+	pthread_mutex_t		last_meat_mutex;
 	t_philo_info		*info;
 	struct s_philo		*next;
 }		t_philo;
@@ -78,11 +81,14 @@ long	ft_atol(const char *nptr);
 bool	get_philo(t_philo **philo, t_philo_info *philo_info);
 
 void	*philo_routine(void *arg);
-void	*big_brother_routine(void *arg);
+void	*big_brother(t_philo *other);
 
 t_philo	*philo_new(t_philo_info *philo_info, int self_nb, bool thread_type);
 bool	philo_add_last(t_philo	**lst, t_philo	*philo);
 int		philo_size(t_philo *lst);
 void	philo_free(t_philo *lst);
+
+bool	print_msg(t_philo_info *philo_info, short type, int self);
+bool	is_philo_dead(t_philo_info *info);
 
 long	get_time(pthread_mutex_t *time_mutex);
