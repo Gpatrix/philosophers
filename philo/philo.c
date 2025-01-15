@@ -6,7 +6,7 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:14:31 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/14 17:49:43 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/15 17:15:36 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,10 @@ bool	print_msg(t_philo_info *philo_info, short type, int self)
 	long	time;
 
 	pthread_mutex_lock(&philo_info->write_mutex);
-	if (check_end(philo_info))
-		return (pthread_mutex_unlock(&philo_info->write_mutex), EXIT_FAILURE);
 	time = get_time(philo_info);
 	if (time == -1)
+		return (pthread_mutex_unlock(&philo_info->write_mutex), EXIT_FAILURE);
+	if (check_end(philo_info))
 		return (pthread_mutex_unlock(&philo_info->write_mutex), EXIT_FAILURE);
 	printf("%li %i ", time - philo_info->start_time, self);
 	if (type == FORK)
