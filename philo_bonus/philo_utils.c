@@ -6,7 +6,7 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 09:16:28 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/14 14:59:30 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/15 13:51:24 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@ t_philo	*philo_new(t_philo_info *philo_info, int self_nb, int start_wait)
 	new_philo = malloc(sizeof(t_philo));
 	if (!new_philo)
 		return (printf("%s\n", ERROR_CREATE_PHILO_STRUCT), NULL);
-	if (pthread_mutex_init(&new_philo->fork, NULL)
-		|| pthread_mutex_init(&new_philo->meal_mutex, NULL))
+	if (sem_init(&new_philo->meal_sem, PTHREAD_PROCESS_PRIVATE, 1))
 		return (printf("%s\n", ERROR_INIT_SEM), NULL);
 	new_philo->info = philo_info;
 	new_philo->self_nb = self_nb;
@@ -58,16 +57,17 @@ void	philo_free(t_philo *lst)
 	if (!lst)
 		return ;
 	origin = NULL;
-	pthread_mutex_destroy(&lst->info->write_sem);
-	pthread_mutex_destroy(&lst->info->time_sem);
-	pthread_mutex_destroy(&lst->info->end_sem);
+	sem_close(lst->info->fork_sem);
+	sem_close(lst->info->time_sem);
+	sem_close(lst->info->write_sem);
+	sem_close(lst->info->end_sem);
 	while (origin != lst)
 	{
 		if (!origin)
 			origin = lst;
 		tmp_philo = lst;
 		lst = lst->next;
-		pthread_mutex_destroy(&tmp_philo->meal_mutex);
+		sem_close(tmp_philo->meal_sem);
 		free(tmp_philo);
 	}
 }

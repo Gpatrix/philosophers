@@ -6,7 +6,7 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:20:53 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/14 17:49:43 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/15 14:02:49 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ bool	verif_meal(t_philo *other)
 	int	philo_counter;
 
 	philo_counter = 0;
+	if (other->info->nb_must_eat == -1)
+		return (false);
 	while (philo_counter != other->info->nb_philo)
 	{
 		pthread_mutex_lock(&other->meal_mutex);

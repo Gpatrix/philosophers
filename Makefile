@@ -19,32 +19,13 @@ NAME_MANDATORY := $(addprefix $(MANDATORY_DIR)/, $(NAME_MANDATORY))
 INCLUDE_MANDATORY = -I $(addprefix $(MANDATORY_DIR)/, philo.h)
 
 
-########################### Bonus ###########################
-BONUS_DIR	= philo_bonus
-BONUS_FILE	= philo.c verif_param.c
-
-BONUS = $(addprefix $(BONUS_DIR)/, $(BONUS_FILE))
-BONUS_OBJS	= $(BONUS:$(BONUS_DIR)%.c=$(BONUS_DIR)%.o)
-
-NAME_BONUS := $(addprefix $(BONUS_DIR)/, $(NAME_BONUS))
-INCLUDE_BONUS = -I $(addprefix $(BONUS_DIR)/, philo_bonus.h)
-
-########################### RULE ###########################
 all: $(NAME_MANDATORY)
-
-bonus: $(NAME_BONUS)
 
 $(MANDATORY_DIR)/%.o: $(MANDATORY_DIR)/%.c
 	$(CC) $(CFLAGS) -c -o $@ $< $(INCLUDE_MANDATORY)
 
-$(BONUS_DIR)%.o: $(BONUS_DIR)%.c
-	$(CC) $(CFLAGS) -c -o $@ $< $(INCLUDE_BONUS)
-
 $(NAME_MANDATORY): $(MANDATORY_OBJS)
 	$(CC) $(CFLAGS) -o $@ $(MANDATORY_OBJS) -lpthread
-
-$(NAME_BONUS): $(BONUS_OBJS)
-	$(CC) $(CFLAGS) -o $@ $(BONUS_OBJS) -lpthread
 
 clean:
 	@$(RM) $(MANDATORY_OBJS) $(BONUS_OBJS)
@@ -53,5 +34,25 @@ fclean:		clean
 	@$(RM) $(NAME_MANDATORY) $(NAME_BONUS)
 
 re:			fclean $(NAME_MANDATORY)
+
+########################### Bonus ###########################
+
+BONUS_DIR	= philo_bonus
+BONUS_FILE	= philo.c verif_param.c philo_routine.c \
+			  big_brother.c init_philo.c philo_utils.c
+
+BONUS = $(addprefix $(BONUS_DIR)/, $(BONUS_FILE))
+BONUS_OBJS	= $(BONUS:$(BONUS_DIR)%.c=$(BONUS_DIR)%.o)
+
+NAME_BONUS := $(addprefix $(BONUS_DIR)/, $(NAME_BONUS))
+INCLUDE_BONUS = -I $(addprefix $(BONUS_DIR)/, philo_bonus.h)
+
+bonus: $(NAME_BONUS)
+
+$(NAME_BONUS): $(BONUS_OBJS)
+	$(CC) $(CFLAGS) -o $@ $(BONUS_OBJS)
+
+$(BONUS_DIR)/%.o: $(BONUS_DIR)/%.c
+	$(CC) $(CFLAGS) -c -o $@ $< $(INCLUDE_BONUS)
 
 .PHONY:		all clean fclean re bonus

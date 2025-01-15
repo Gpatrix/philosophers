@@ -6,7 +6,7 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:14:54 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/14 17:49:54 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/15 13:51:35 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 #include <stdbool.h>
 #include <unistd.h>
 #include <sys/time.h>
+#include <fcntl.h>
+
 
 #define ERROR_PARAM \
 "./philo number_of_philosophers time_to_die time_to_eat time_to_sleep \
@@ -58,9 +60,10 @@ typedef struct s_philo_info
 	long	nb_must_eat;
 	long	start_time;
 	bool	is_ended;
-	sem_t	write_sem;
-	sem_t	time_sem;
-	sem_t	end_sem;
+	sem_t	*fork_sem;
+	sem_t	*time_sem;
+	sem_t	*write_sem;
+	sem_t	*end_sem;
 }		t_philo_info;
 
 typedef struct s_philo
@@ -70,8 +73,7 @@ typedef struct s_philo
 	long			last_meal;
 	long			nb_meal;
 	int				start_wait;
-	sem_t			fork;
-	sem_t			meal_mutex;
+	sem_t			*meal_sem;
 	t_philo_info	*info;
 	struct s_philo	*next;
 }		t_philo;

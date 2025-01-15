@@ -6,7 +6,7 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:18:52 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/14 17:49:43 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/15 13:39:17 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,19 @@
 
 bool	check_end(t_philo_info *info)
 {
-	pthread_mutex_lock(&info->end_mutex);
+	sem_wait(&info->end_sem);
 	if (info->is_ended == true)
-		return (pthread_mutex_unlock(&info->end_mutex), true);
+		return (sem_post(&info->end_sem), true);
 	else
-		return (pthread_mutex_unlock(&info->end_mutex), false);
+		return (sem_post(&info->end_sem), false);
 }
 
 bool	update_meal(t_philo *self)
 {
-	pthread_mutex_lock(&self->meal_mutex);
+	sem_wait(&self->meal_sem);
 	self->last_meal = get_time(self->info);
 	self->nb_meal++;
-	pthread_mutex_unlock(&self->meal_mutex);
+	sem_post(&self->meal_sem);
 	if (self->last_meal == -1 || verif_meal(self))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
@@ -34,18 +34,18 @@ bool	update_meal(t_philo *self)
 
 bool	philo_eat(t_philo *self)
 {
-	pthread_mutex_lock(&self->fork);
+	sem_wait(&self->info->fork_sem);
 	if (print_msg(self->info, FORK, self->self_nb))
-		return (pthread_mutex_unlock(&self->fork), EXIT_FAILURE);
-	pthread_mutex_lock(&self->next->fork);
+		return (sem_post(&self->info->fork_sem), EXIT_FAILURE);
+	sem_wait(&self->info->fork_sem);
 	if (print_msg(self->info, FORK, self->self_nb))
-		return (pthread_mutex_unlock(&self->fork),
-			pthread_mutex_unlock(&self->next->fork), EXIT_FAILURE);
+		return (sem_post(&self->info->fork_sem),
+			sem_post(&self->next->info->fork_sem), EXIT_FAILURE);
 	if (print_msg(self->info, EATING, self->self_nb))
 		return (EXIT_FAILURE);
 	usleep(self->info->t_to_eat * 1000);
-	pthread_mutex_unlock(&self->fork);
-	pthread_mutex_unlock(&self->next->fork);
+	sem_post(&self->info->fork_sem);
+	sem_post(&self->next->info->fork_sem);
 	if (update_meal(self))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);

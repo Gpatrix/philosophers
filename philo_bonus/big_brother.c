@@ -6,7 +6,7 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:20:53 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/14 14:55:26 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/15 14:03:15 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,20 @@ static inline bool	_verif_dead(t_philo *other)
 	long	time;
 
 	time = get_time(other->info);
-	pthread_mutex_lock(&other->meal_mutex);
+	sem_wait(&other->meal_sem);
 	if (time - other->last_meal > other->info->t_to_die)
 	{
-		pthread_mutex_lock(&other->info->end_sem);
+		sem_wait(&other->info->end_sem);
 		other->info->is_ended = true;
-		pthread_mutex_unlock(&other->info->end_sem);
-		pthread_mutex_lock(&other->info->write_sem);
+		sem_post(&other->info->end_sem);
+		sem_wait(&other->info->write_sem);
 		printf("%li %i ", time - other->info->start_time, other->self_nb);
 		printf(RED MSG_DIED END);
-		pthread_mutex_unlock(&other->info->write_sem);
-		pthread_mutex_unlock(&other->meal_mutex);
+		sem_post(&other->info->write_sem);
+		sem_post(&other->meal_sem);
 		return (EXIT_FAILURE);
 	}
-	pthread_mutex_unlock(&other->meal_mutex);
+	sem_post(&other->meal_sem);
 	return (EXIT_SUCCESS);
 }
 
@@ -38,19 +38,21 @@ bool	verif_meal(t_philo *other)
 {
 	int	philo_counter;
 
+	if (other->info->nb_must_eat == -1)
+		return (false);
 	philo_counter = 0;
 	while (philo_counter != other->info->nb_philo)
 	{
-		pthread_mutex_lock(&other->meal_mutex);
+		sem_wait(&other->meal_sem);
 		if (other->nb_meal < other->info->nb_must_eat)
-			return (pthread_mutex_unlock(&other->meal_mutex), false);
-		pthread_mutex_unlock(&other->meal_mutex);
+			return (sem_post(&other->meal_sem), false);
+		sem_post(&other->meal_sem);
 		other = other->next;
 		philo_counter++;
 	}
-	pthread_mutex_lock(&other->info->end_sem);
+	sem_wait(&other->info->end_sem);
 	other->info->is_ended = true;
-	pthread_mutex_unlock(&other->info->end_sem);
+	sem_post(&other->info->end_sem);
 	return (true);
 }
 
