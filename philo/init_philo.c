@@ -6,7 +6,7 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 10:49:43 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/14 13:46:54 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/23 09:20:38 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static bool	_init_pthread(t_philo *philo, int nb_philo)
 	return (EXIT_SUCCESS);
 }
 
-static void	_wait_philo(t_philo *philo)
+void	wait_philo(t_philo *philo)
 {
 	int	counter;
 
@@ -66,8 +66,8 @@ bool	get_philo(t_philo **philo, t_philo_info *philo_info)
 	if (_init_struct(philo, philo_info))
 		return (EXIT_FAILURE);
 	if (_init_pthread(*philo, philo_info->nb_philo))
-		return (EXIT_FAILURE);
+		return (end_simu(*philo), wait_philo(*philo), EXIT_FAILURE);
 	big_brother(*philo);
-	_wait_philo(*philo);
+	wait_philo(*philo);
 	return (EXIT_SUCCESS);
 }

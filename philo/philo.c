@@ -6,7 +6,7 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:14:31 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/15 17:15:36 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/23 09:19:44 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	main(int argc, char **argv)
 	else
 	{
 		if (get_philo(&philo, &philo_info))
-			return (EXIT_FAILURE);
+			return (philo_free(philo), EXIT_FAILURE);
 		philo_free(philo);
 	}
 	return (EXIT_SUCCESS);

@@ -6,7 +6,7 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:14:54 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/14 17:49:43 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/23 09:18:26 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <stdbool.h>
 #include <unistd.h>
 #include <sys/time.h>
+#include <string.h>
 
 #define ERROR_PARAM \
 "./philo number_of_philosophers time_to_die time_to_eat time_to_sleep \
@@ -79,6 +80,7 @@ bool	verif_param(int argc, char **argv);
 long	ft_atol(const char *nptr);
 
 bool	get_philo(t_philo **philo, t_philo_info *philo_info);
+long	get_time(t_philo_info *info);
 
 void	*philo_routine(void *arg);
 void	*big_brother(t_philo *other);
@@ -89,8 +91,8 @@ int		philo_size(t_philo *lst);
 void	philo_free(t_philo *lst);
 
 bool	print_msg(t_philo_info *philo_info, short type, int self);
-bool	check_end(t_philo_info *info);
-
-long	get_time(t_philo_info *info);
 
 bool	verif_meal(t_philo *other);
+void	wait_philo(t_philo *philo);
+void	end_simu(t_philo *other);
+bool	check_end(t_philo_info *info);

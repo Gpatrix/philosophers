@@ -6,7 +6,7 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:20:53 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/15 14:02:49 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/23 09:10:06 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,14 @@ static inline bool	_verif_dead(t_philo *other)
 	return (EXIT_SUCCESS);
 }
 
+
+void	end_simu(t_philo *other)
+{
+	pthread_mutex_lock(&other->info->end_mutex);
+	other->info->is_ended = true;
+	pthread_mutex_unlock(&other->info->end_mutex);
+}
+
 bool	verif_meal(t_philo *other)
 {
 	int	philo_counter;
@@ -50,9 +58,7 @@ bool	verif_meal(t_philo *other)
 		other = other->next;
 		philo_counter++;
 	}
-	pthread_mutex_lock(&other->info->end_mutex);
-	other->info->is_ended = true;
-	pthread_mutex_unlock(&other->info->end_mutex);
+	end_simu(other);
 	return (true);
 }
 

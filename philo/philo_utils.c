@@ -6,7 +6,7 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 09:16:28 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/14 17:49:43 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/23 09:18:58 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ t_philo	*philo_new(t_philo_info *philo_info, int self_nb, int start_wait)
 	if (pthread_mutex_init(&new_philo->fork, NULL)
 		|| pthread_mutex_init(&new_philo->meal_mutex, NULL))
 		return (printf("%s\n", ERROR_INIT_MUTEX), NULL);
+	memset(&new_philo->philo, 0, sizeof(new_philo->philo));
 	new_philo->info = philo_info;
 	new_philo->self_nb = self_nb;
 	new_philo->start_wait = start_wait;
