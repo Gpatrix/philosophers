@@ -6,7 +6,7 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:14:31 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/23 09:19:44 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/27 08:47:10 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,9 @@ bool	get_param(int argc, char **argv, t_philo_info *philo_info)
 		philo_info->nb_must_eat = ft_atol(argv[5]);
 	else
 		philo_info->nb_must_eat = -1;
-	if (pthread_mutex_init(&philo_info->time_mutex, NULL))
-		return (printf("%s\n", ERROR_INIT_MUTEX), EXIT_FAILURE);
-	if (pthread_mutex_init(&philo_info->write_mutex, NULL))
-		return (printf("%s\n", ERROR_INIT_MUTEX), EXIT_FAILURE);
-	if (pthread_mutex_init(&philo_info->end_mutex, NULL))
+	if (pthread_mutex_init(&philo_info->time_mutex, NULL)
+		|| pthread_mutex_init(&philo_info->write_mutex, NULL)
+		|| pthread_mutex_init(&philo_info->end_mutex, NULL))
 		return (printf("%s\n", ERROR_INIT_MUTEX), EXIT_FAILURE);
 	philo_info->is_ended = false;
 	philo_info->start_time = 0;

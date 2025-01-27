@@ -6,7 +6,7 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 09:16:28 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/23 09:18:58 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/27 08:58:18 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ bool	philo_add_last(t_philo	**lst, t_philo	*philo)
 {
 	t_philo	*origin;
 
-	if (!philo || !philo)
+	if (!philo || !lst)
 		return (EXIT_FAILURE);
 	if (!*lst)
 	{
