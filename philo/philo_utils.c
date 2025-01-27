@@ -6,7 +6,7 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 09:16:28 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/27 08:58:18 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/27 16:55:39 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void	philo_free(t_philo *lst)
 	pthread_mutex_destroy(&lst->info->write_mutex);
 	pthread_mutex_destroy(&lst->info->time_mutex);
 	pthread_mutex_destroy(&lst->info->end_mutex);
+	pthread_mutex_destroy(&lst->info->nb_philo_mutex);
 	while (origin != lst)
 	{
 		if (!origin)
