@@ -6,7 +6,7 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:20:53 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/23 09:10:06 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/27 11:06:27 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ static inline bool	_verif_dead(t_philo *other)
 	pthread_mutex_unlock(&other->meal_mutex);
 	return (EXIT_SUCCESS);
 }
-
 
 void	end_simu(t_philo *other)
 {

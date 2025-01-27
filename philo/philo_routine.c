@@ -6,7 +6,7 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:18:52 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/15 14:06:23 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/27 11:24:53 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,32 @@ bool	philo_eat(t_philo *self)
 	return (EXIT_SUCCESS);
 }
 
+bool	check_single_philo(t_philo *self)
+{
+	pthread_mutex_lock(&self->info->nb_philo_mutex);
+	if (self->info->nb_philo == 1)
+	{
+		pthread_mutex_lock(&self->fork);
+		pthread_mutex_lock(&self->info->write_mutex);
+		printf("0 1 "GREY"has taken a fork\n"END);
+		pthread_mutex_unlock(&self->info->write_mutex);
+		pthread_mutex_unlock(&self->fork);
+		return (pthread_mutex_unlock(&self->info->nb_philo_mutex),
+			usleep(self->info->t_to_die * 1000), EXIT_FAILURE);
+	}
+	else
+		return (pthread_mutex_unlock(&self->info->nb_philo_mutex),
+			EXIT_SUCCESS);
+}
+
 void	*philo_routine(void *arg)
 {
 	t_philo	*self;
 
 	self = (t_philo *)arg;
 	print_msg(self->info, THINKING, self->self_nb);
+	if (check_single_philo(self))
+		return (NULL);
 	usleep(self->start_wait);
 	while (1)
 	{
