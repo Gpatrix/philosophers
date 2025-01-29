@@ -6,7 +6,7 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 17:14:54 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/27 11:13:28 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/29 08:52:54 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ typedef struct s_philo
 	int					self_nb;
 	long				last_meal;
 	long				nb_meal;
-	int					start_wait;
 	pthread_mutex_t		fork;
 	pthread_mutex_t		meal_mutex;
 	t_philo_info		*info;
@@ -86,7 +85,7 @@ long	get_time(t_philo_info *info);
 void	*philo_routine(void *arg);
 void	*big_brother(t_philo *other);
 
-t_philo	*philo_new(t_philo_info *philo_info, int self_nb, int start_wait);
+t_philo	*philo_new(t_philo_info *philo_info, int self_nb);
 bool	philo_add_last(t_philo	**lst, t_philo	*philo);
 int		philo_size(t_philo *lst);
 void	philo_free(t_philo *lst);

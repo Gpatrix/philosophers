@@ -6,7 +6,7 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:18:52 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/27 11:24:53 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/29 08:53:45 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,10 @@ void	*philo_routine(void *arg)
 	t_philo	*self;
 
 	self = (t_philo *)arg;
-	print_msg(self->info, THINKING, self->self_nb);
 	if (check_single_philo(self))
 		return (NULL);
-	usleep(self->start_wait);
+	if (self->self_nb % 2 == 0)
+		usleep(15000);
 	while (1)
 	{
 		if (philo_eat(self))

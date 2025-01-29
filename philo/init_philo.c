@@ -6,7 +6,7 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 10:49:43 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/27 08:53:59 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/29 08:53:23 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,12 @@
 static bool	_init_struct(t_philo **philo, t_philo_info *philo_info)
 {
 	int		counter;
-	int		start_wait;
 
 	counter = 0;
 	while (counter != philo_info->nb_philo)
 	{
-		if (counter % 2 != 0)
-			start_wait = 15000;
-		else
-			start_wait = 0;
 		if (philo_add_last(philo,
-				philo_new(philo_info, ++counter, start_wait)))
+				philo_new(philo_info, ++counter)))
 			return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);

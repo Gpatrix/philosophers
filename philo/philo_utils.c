@@ -6,13 +6,13 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 09:16:28 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/27 16:55:39 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/29 08:52:47 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-t_philo	*philo_new(t_philo_info *philo_info, int self_nb, int start_wait)
+t_philo	*philo_new(t_philo_info *philo_info, int self_nb)
 {
 	t_philo	*new_philo;
 
@@ -25,7 +25,6 @@ t_philo	*philo_new(t_philo_info *philo_info, int self_nb, int start_wait)
 	memset(&new_philo->philo, 0, sizeof(new_philo->philo));
 	new_philo->info = philo_info;
 	new_philo->self_nb = self_nb;
-	new_philo->start_wait = start_wait;
 	new_philo->nb_meal = 0;
 	new_philo->next = NULL;
 	return (new_philo);
