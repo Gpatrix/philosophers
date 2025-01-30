@@ -6,7 +6,7 @@
 /*   By: lchauvet <lchauvet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 17:18:52 by lchauvet          #+#    #+#             */
-/*   Updated: 2025/01/30 09:06:04 by lchauvet         ###   ########.fr       */
+/*   Updated: 2025/01/30 09:25:56 by lchauvet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,7 @@ bool	check_single_philo(t_philo *self)
 	if (self->info->nb_philo == 1)
 	{
 		pthread_mutex_lock(&self->fork);
-		pthread_mutex_lock(&self->info->write_mutex);
-		printf("0 1 "GREY"has taken a fork\n"END);
-		pthread_mutex_unlock(&self->info->write_mutex);
+		print_msg(self->info, FORK, self->self_nb);
 		usleep(self->info->t_to_die * 1000);
 		pthread_mutex_unlock(&self->fork);
 		pthread_mutex_unlock(&self->info->nb_philo_mutex);
